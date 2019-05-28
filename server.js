@@ -17,7 +17,7 @@ app.set("view engine", "handlebars");
 const routes = require("./controllers/index");
 app.use(routes);
 
-mongoose.connect("mongodb://localhost:27017/newsScraper", {
+mongoose.connect("mongodb://localhost:27017/admin", {
   useNewUrlParser: true
 });
 
