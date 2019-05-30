@@ -1,11 +1,10 @@
 var mongoose = require("mongoose");
-
 var Schema = mongoose.Schema;
 
 var CommentSchema = new Schema({
-  title: String,
-  body: String,
-  author: String
+  body: {
+    type: String
+  }
 });
 
 var Comment = mongoose.model("Comment", CommentSchema);
