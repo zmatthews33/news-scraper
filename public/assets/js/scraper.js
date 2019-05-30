@@ -1,38 +1,40 @@
 $(document).ready(function() {
-  $(".scrape").on("click", function(e) {
-    e.preventDefault();
-
-    $(".modal").toggleClass("shown");
-
-    $.ajax({
-      url: "/scrape"
-    }).done(function(res) {
-      $(".modalArticles").empty();
-      // hide modal spinner...
-
-      // populate modal
-      $.each(res, function(i, elem) {
-        var title = $("<h3>");
-        var link = $("<a>")
-          .attr("href", elem.link)
-          .text(elem.title);
-        link.addClass("modalLink");
-        title.append(link);
-        var byline = $("<span>")
-          .text(elem.byline)
-          .addClass("byline");
-        var listItem = $("<li>");
-        listItem.append(title, byline);
-        $(".modalArticles").append(listItem);
-      });
-
-      $(".modalWindow").toggleClass("shown");
-    });
+  $(".navbar-burger").on("click", function() {
+    $(".navbar-burger").toggleClass("is-active");
+    $(".dropdown").toggle();
+    $(".dropdown").toggleClass("is-open");
   });
 
-  $(".modal").on("click", function(e) {
-    e.stopPropagation();
-    $(this).toggleClass("shown");
-    $(".modalWindow").toggleClass("shown");
+  $.getJSON("/articles", function(data) {
+    for (var i = 0; i < data.length; i++) {
+      $("#scrape-results").prepend(
+        "<div class='result-div'><p class='result-text'>" +
+          data[i].title +
+          "<br>" +
+          data[i].description +
+          "</p><button class='save-article button is-info is-medium' data-id='" +
+          data[i]._id +
+          "'><span class='icon'><i class='fa fa-bookmark'></i></span>Save Article</button></div>"
+      );
+    }
+  });
+
+  $(document).on("click", ".save-article", function() {
+    $(this)
+      .children("span.icon")
+      .children("i.fa-bookmark")
+      .removeClass("fa-bookmark")
+      .addClass("fa-check-circle");
+    var articleID = $(this).attr("data-id");
+    console.log(articleID);
+    $.ajax({
+      method: "POST",
+      url: "/save/" + articleID,
+      data: {
+        saved: true
+      }
+    }).done(function(data) {
+      console.log("data: ", data);
+    });
   });
 });
