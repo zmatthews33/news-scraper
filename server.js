@@ -1,24 +1,31 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const handlebars = require("express-handlebars");
+const morgan = require("morgan");
 
-const PORT = process.env.PORT || 3000;
+let PORT = process.env.PORT || 3000;
+let MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/news_scraper";
 
+//Init Express
 const app = express();
 
-app.use(express.static("public"));
+app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("public"));
 
-const exphbs = require("express-handlebars");
-
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.engine("handlebars", handlebars({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-const routes = require("./controllers/index");
-app.use(routes);
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI);
 
-mongoose.connect("mongodb://localhost:27017/admin", {
-  useNewUrlParser: true
+let db = mongoose.connection;
+db.on("error", error => {
+  console.log("Connection error ${error}");
 });
+require("./controllers/index.js")(app);
 
-app.listen(PORT, () => console.log(`App running on port ${PORT}.`));
+app.listen(PORT, () => {
+  console.log(`App running on port ${PORT}`);
+});

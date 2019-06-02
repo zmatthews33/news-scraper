@@ -1,12 +1,15 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-var CommentSchema = new Schema({
+//Create schema
+const CommentSchema = new Schema({
   body: {
     type: String
   }
 });
 
-var Comment = mongoose.model("Comment", CommentSchema);
+//Create model from Schema
+
+const Comment = mongoose.model("Comment", CommentSchema);
 
 module.exports = Comment;

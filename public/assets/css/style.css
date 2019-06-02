@@ -8,9 +8,14 @@ a.saved {
 .dropdown {
   display: none;
 }
-
-#hero-title {
+.logo {
+  height: 60px;
+  width: 240;
+}
+.display-3 {
   padding-bottom: 20px;
+  text-align: center;
+  font-size: 3em;
 }
 
 section.section {
@@ -62,13 +67,6 @@ div#saved-results {
 
 .saved-div {
   clear: both;
-}
-
-.footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  padding: 40px 0;
 }
 
 span.icon {

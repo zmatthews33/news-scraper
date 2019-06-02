@@ -1,30 +1,40 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-var ArticleSchema = new Schema({
+//Create Schema
+const ArticleSchema = new Schema({
   title: {
     type: String,
     required: true,
     unique: true
   },
-  description: {
+  link: {
     type: String,
     required: true,
     unique: true
   },
+  summary: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now
+  },
   saved: {
     type: Boolean,
-    required: true,
     default: false
   },
-  comments: [
+  comment: [
     {
-      type: Schema.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Comment"
     }
   ]
 });
 
-var Article = mongoose.model("Article", ArticleSchema);
+//Create model from Schema
+const Article = mongoose.model("Article", ArticleSchema);
 
 module.exports = Article;
